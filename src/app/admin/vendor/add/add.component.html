@@ -1,0 +1,146 @@
+<div class="page-title">
+    <span class="xs-title" *ngIf="EditModeOn == false"> Add Vendor </span>
+    <span class="xs-title" *ngIf="EditModeOn == true"> Update Vendor details </span>
+</div>
+
+<form [formGroup]="vendorFormGroup" name="vendorForm">
+    <div class="card border-0 mb-2 card-shadow">
+        <div class="card-body">
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblVendorName" for="inputVendorName">Vendor Name</label> <span class="text-danger">
+                        *</span>
+                    <input type="text" class="form-control" id="inputVendorName" formControlName="vendorName"
+                        minlength="2" maxlength="50" [readonly]="EditModeOn" placeholder="Enter full name" />
+                    <div class="validation-msg" style="color:red" *ngIf="pf.vendorName.touched && pf.vendorName.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.vendorName.errors?.pattern">Invalid vendor name</li>
+                            <li class="text-danger" *ngIf="pf.vendorName.errors?.required">Vendor name required</li>
+                            <li class="text-danger" *ngIf="pf.vendorName.errors?.minlength">
+                                Vendor name length should not be less than 2
+                            </li>
+                            <li class="text-danger" *ngIf="pf.vendorName.errors?.maxlength">
+                                Vendor name length should not be greater than 50
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label for="inputMobileNumber">Mobile No.</label> <span class="text-danger"> *</span>
+                    <input type="text" class="form-control" id="inputMobileNumber" formControlName="mobileNumber"
+                        maxlength="10" minlength="10" placeholder="Enter mobile number">
+                    <div class="validation-msg" style="color:red"
+                        *ngIf="pf.mobileNumber.touched && pf.mobileNumber.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger"
+                                *ngIf="pf.mobileNumber.errors?.minlength && !pf.mobileNumber.errors?.pattern">
+                                Mobile number should not be less than 10 digits
+                            </li>
+                            <li class="text-danger"
+                                *ngIf="pf.mobileNumber.errors?.maxlength && !pf.mobileNumber.errors?.pattern">
+                                Mobile number should not be greater than 10 digits
+                            </li>
+                            <li class="text-danger" *ngIf="pf.mobileNumber.errors?.pattern">
+                                Invalid mobile number
+                            </li>
+                            <li class="text-danger" *ngIf="pf.mobileNumber.errors?.required">
+                                Mobile number required
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblLocation" for="inputLocation">Location</label> <span class="text-danger"> *</span>
+                    <input type="text" class="form-control" id="inputLocation" formControlName="location" minlength="2"
+                    maxlength="50" placeholder="Enter Location" />
+                    <div class="validation-msg" style="color:red" *ngIf="pf.location.touched && pf.location.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.location.errors?.required">Location required</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblSegment" for="inputSegment">Segment</label> <span class="text-danger"> *</span>
+                    <input type="text" class="form-control" id="inputSegment" formControlName="segment" minlength="2"
+                    maxlength="50" placeholder="Enter Segment" />
+                    <div class="validation-msg" style="color:red" *ngIf="pf.segment.touched && pf.segment.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.segment.errors?.required">Segment required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group mt-4">
+                <div class="col-md-12 col-lg-12">
+                    <label>Address</label>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <input type="text" class="form-control" id="inputAddressline1" formControlName="addressLine1"
+                        minlength="2" maxlength="50" placeholder="Villege, Area" />
+                    <div class="validation-msg" style="color:red"
+                        *ngIf="pf.addressLine1.touched && pf.addressLine1.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.addressLine1.errors?.required">Villege/Area required</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <input type="text" class="form-control" id="inputAddressline2" formControlName="addressLine2"
+                        minlength="2" maxlength="50" placeholder="Landmark" />
+                    <div class="validation-msg" style="color:red"
+                        *ngIf="pf.addressLine2.touched && pf.addressLine2.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.addressLine2.errors?.required">Landmark required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group mt-4">
+                <div class="col-md-4 col-lg-4">
+                    <input type="text" class="form-control" id="inputCity" formControlName="city" minlength="2"
+                        maxlength="50" placeholder="City" />
+                    <div class="validation-msg" style="color:red" *ngIf="pf.city.touched && pf.city.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.city.errors?.required">City required</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <input type="text" class="form-control" id="inputPincode" formControlName="pincode" minlength="6"
+                        maxlength="6" placeholder="Pin Code" />
+                    <div class="validation-msg" style="color:red" *ngIf="pf.pincode.touched && pf.pincode.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.pincode.errors?.required">Landmark required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group mt-4">
+                <div class="col-md-4 col-lg-4">
+                    <input type="text" class="form-control" id="inputState" formControlName="state" minlength="2"
+                        maxlength="50" placeholder="State" />
+                    <div class="validation-msg" style="color:red" *ngIf="pf.state.touched && pf.state.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.state.errors?.required">State required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 mt-4 mb-3 bg-transparent">
+        <div class="card-body p-0">
+            <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="saveBtnValidation()"
+                (click)="OnSaveBtnClicked()">Save</button>
+            <button class="btn-footer-outline" id="btnCancel" (click)="OnCancelBtnClicked()">Cancel</button>
+        </div>
+    </div>
+
+</form>

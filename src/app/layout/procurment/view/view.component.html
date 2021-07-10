@@ -1,0 +1,99 @@
+<div class="page-title">
+    <span class="xs-title">Procurement Details</span>
+</div>
+
+<div class="card border-0 mb-2 card-shadow">
+    <div class="card-body" id="collapseDetails">
+        <div class="row form-group">
+            <div class="col-md-4 col-lg-4">
+                <label>Procurement Date</label>
+                <div>{{procure.ProcurementDate | date:DataFormat}}</div>
+            </div>
+            <div class="col-md-4 col-lg-4">
+                <label>Farmer Name</label>
+                <div>{{procure.FarmerName}}</div>
+            </div>
+        </div>
+       
+        <div class="row form-group">
+            <div class="col-md-8 col-lg-8">
+                <div *ngIf='procurmentprdlist!=undefined'>
+                    <div class="widget-area-grid padding-0" *ngIf='procurmentprdlist.length!=0'>
+                      <table mat-table [dataSource]="dataSource" class="table-cust">
+                        <ng-container matColumnDef="prdname">
+                          <th class="width35 ip-w-10" mat-header-cell *matHeaderCellDef> Product Name </th>
+                          <td mat-cell *matCellDef="let e" title="{{e.ProductName}}">{{e.ProductName}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="qty">
+                          <th class="width15 ip-w-5" mat-header-cell *matHeaderCellDef> Quantity </th>
+                          <td mat-cell *matCellDef="let e" title="{{e.Quantity}}">{{e.Quantity}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="uom">
+                          <th class="width15 ip-w-5" mat-header-cell *matHeaderCellDef> UOM </th>
+                          <td mat-cell *matCellDef="let e" title="{{e.UOM}}">{{e.UOM}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="prdrate">
+                          <th class="width15 ip-w-5" mat-header-cell *matHeaderCellDef> Rate </th>
+                          <td mat-cell *matCellDef="let e" title="{{e.Rate}}">{{e.Rate}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="totalamt">
+                            <th class="width20 ip-w-5" mat-header-cell *matHeaderCellDef> Amount<br>(Quantity * Rate) </th>
+                            <td mat-cell *matCellDef="let e" title="{{e.TotalAmount}}"><i class="fa fa-inr"></i> {{e.TotalAmount}} </td>
+                          </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+                      <table class="footer-table" *ngIf="procurmentprdlist.length!=0">
+                        <tr class="table-secondary font-weight-bold">
+                            <td class="width80 ip-w-10">Total Amount</td>
+                            <td class="width20 ip-w-10"><i class="fa fa-inr"></i> {{TotalProductProcurementAmount}}</td>
+                        </tr>
+                    </table>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-4 col-lg-4">
+                <label>Transport Expense</label>
+                <div><i class="fa fa-inr" aria-hidden="true"></i> {{procure.TransportExpense}}</div>
+            </div>
+            <div class="col-md-5 col-lg-5">
+                <label>Total Bill Amount (Total Amount + Transport Expense) </label>
+                <div><i class="fa fa-inr" aria-hidden="true"></i> {{procure.TotalAmount}}</div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-4 col-lg-4">
+                <label>Amount Paid</label>
+                <div><i class="fa fa-inr" aria-hidden="true"></i> {{procure.AmountPaid}}</div>
+            </div>
+            <div class="col-md-4 col-lg-4">
+                <label>Amount Pending (Total Bill Amount + Amount Paid)</label>
+                <div><i class="fa fa-inr" aria-hidden="true"></i> {{procure.PendingAmount}}</div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-4 col-lg-4">
+                <label>Payment Cycle</label>
+                <div>{{procure.PaymentCycle}}</div>
+            </div>
+            <div class="col-md-8 col-lg-8">
+                <label>Remark</label>
+                <div>{{procure.Remark}}</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="card border-0 mt-4 mb-3 bg-transparent">
+    <div class="card-body p-0">
+        <button class="btn-footer-fill mr-2" id="btnUpdate" (click)="updateBtnClicked()"> Update </button>
+        <button class="btn-footer-fill-delete bg-danger mr-2" id="btnDelete" (click)="deleteBtnClicked()"> Delete </button>
+        <button class="btn-footer-outline" id="btnCancel" (click)="cancelBtnClicked()">Cancel</button>
+    </div>
+</div>

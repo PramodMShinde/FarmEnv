@@ -1,0 +1,92 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-2">
+    <div class="col-6">
+      <h4 class="h4 mb-0 text-gray-800">Sales</h4>
+  </div>
+  <div class="col-6 text-right">
+      <form class="form-inline float-right" [formGroup]="filterSaleFormGroup" name="saleForm">
+          <div class="position-relative">
+            <input [owlDateTime]="dt" class="form-control" id="inputFilterSaleDate" formControlName="FilterSaleDate"
+                 placeholder="Please Select Date ..." readonly (ngModelChange)="onFilterSaleDateChange($event)">
+            <span [owlDateTimeTrigger]="dt" class="datetime-icon"> <i class="fa fa-calendar"></i> </span>
+            <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>
+          </div>
+          <div class="form-group mx-sm-2 mb-2">
+            <button class="btn-footer-fill mt-2 ht-35" id="btnResetFilterSaleForm" (click)="OnResetBtnClicked()">Reset</button>
+          </div>
+          <div class="form-group mx-sm-1 mb-2">
+              <a (click)='navigationToAddRecord()' class="btn btn-primary mt-2 text-white ht-35"><i class="fa fa-plus"></i> Add</a>
+          </div>
+      </form>
+  </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-center mb-4">
+            <div class="pagination-mat position-relative">
+              <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                [showFirstLastButtons]="true" [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+              </mat-paginator>
+            </div>
+          </div>
+
+          <div *ngIf='datalist!=undefined'>
+            <div class="widget-area-grid padding-0" *ngIf='datalist.length!=0'>
+              <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
+                <!-- Position Column -->
+                <ng-container matColumnDef="date">
+                  <th class="width10 ip-w-15" mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+                  <td mat-cell *matCellDef="let element">
+                    <span *ngIf='element.SaleDate!="0001-01-01T00:00:00"' title="{{element.SaleDate | date : DataFormat}}">
+                      {{element.SaleDate | date : DataFormat}} 
+                    </span>
+                    <span *ngIf='element.SaleDate=="0001-01-01T00:00:00"'> - </span>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="vendorname">
+                  <th class="width25 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Vendor </th>
+                  <td mat-cell *matCellDef="let element" title="{{element.VendorName}}">{{element.VendorName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="gst">
+                    <th class="width10 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> GST (%) </th>
+                    <td mat-cell *matCellDef="let element" title="{{element.GST}}">{{element.GST}} </td>
+                  </ng-container>
+                <ng-container matColumnDef="totalBill">
+                  <th class="width12 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Total Bill </th>
+                  <td mat-cell *matCellDef="let element" title="{{element.TotalBillAmount}}"><i class="fa fa-inr"></i> {{element.TotalBillAmount}} </td>
+                </ng-container>
+                <ng-container matColumnDef="amtPaid">
+                    <th class="width13 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Amt. Paid </th>
+                    <td mat-cell *matCellDef="let element" title="{{element.AmountPaid}}"><i class="fa fa-inr"></i> {{element.AmountPaid}} </td>
+                </ng-container>
+                <ng-container matColumnDef="amtPending">
+                <th class="width15 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Amt. Pending </th>
+                <td mat-cell *matCellDef="let element" title="{{element.AmountPending}}"><i class="fa fa-inr"></i> {{element.AmountPending}} </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th class="width20 ip-w-25" mat-header-cell *matHeaderCellDef> Actions </th>
+                  <td mat-cell *matCellDef="let element">
+                    <div class="action-btns btn-tbl-action">
+                      <button type="button" title="View" id="btnView" (click)="navigationToViewRecord(element)">
+                        <span class="fa fa-file-text-o"></span>
+                      </button>
+                      <button type="button" title="Update" id="btnUpdate" (click)="navigationToEditRecord(element)">
+                        <span class="fa fa-pencil-square-o"></span>
+                      </button>
+                      <button type="button" title="Delete" id="btnDelete" (click)="deleteRecord(element)">
+                        <span class="fa fa-trash-o"></span>
+                      </button>
+                    </div>
+                  </td>
+                </ng-container>
+      
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </div>
+            <div class="widget-area-grid padding-0 text-center" *ngIf='datalist.length==0'>
+              No Record found
+            </div>
+          </div>
+    </div>
+</div>

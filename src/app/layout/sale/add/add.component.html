@@ -1,0 +1,285 @@
+<div class="page-title">
+    <span class="xs-title" *ngIf="EditModeOn == false"> Add Sale </span>
+    <span class="xs-title" *ngIf="EditModeOn == true"> Update Sale details </span>
+</div>
+
+<form [formGroup]="saleFormGroup" name="saleForm">
+    <div class="card border-0 mb-2 card-shadow">
+        <div class="card-body">
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4 form-group">
+                    <label for="inputSaleDate" id="lblSaleDate">Procurement Date <span class="text-danger">*</span></label>
+                    <div class="position-relative">
+                      <input [owlDateTime]="dt" class="form-control" id="inputSaleDate" formControlName="SaleDate"
+                             placeholder="Please Select Sale Date" readonly (ngModelChange)="onSaleDateChange($event)" 
+                             [attr.disabled]="EditModeOn?'':null">
+                      <span [owlDateTimeTrigger]="dt" class="datetime-icon">
+                        <i class="fa fa-calendar"></i>
+                      </span>
+                      <owl-date-time #dt [pickerType]="'calendar'" [disabled]="EditModeOn"></owl-date-time>
+                    </div>
+                    <div class="text-danger" *ngIf="SaleDateError">
+                      {{SaleDateErrorMessage}}
+                    </div>
+                  </div>         
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblVendorName" for="inputVendorName">Vendor Name <span class="text-danger">*</span></label>
+                    <select id="inputVendorName" formControlName="VendorId" (change)="onVendorSelected($event)" class="form-control" [attr.disabled]="EditModeOn?'':null">
+                    <option *ngFor="let v of vendors" [value]="v.Identifier">{{v.Name}}</option>
+                    </select>
+                    <div class="validation-msg" style="color:red">
+                        <ul *ngIf="saleFormErrorObject.vendorShowError" style="list-style-type:none">
+                            <li class="text-danger">Please select vendor</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblVendorCode" for="inputVendorCode">Vendor Number</label> <span class="text-danger"> *</span>
+                    <input type="text" class="form-control" id="inputVendorCode" formControlName="VendorNumber" placeholder="Auto populated" readonly/>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.VendorNumber.touched && pf.VendorNumber.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.VendorNumber.errors?.required">Vendor Code required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblVendorLocation" for="inputVendorLocation">Vendor Location</label> <span class="text-danger"> *</span>
+                    <input type="text" class="form-control" id="inputVendorLocation" formControlName="VendorLocation" placeholder="Auto populated" readonly/>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.VendorLocation.touched && pf.VendorLocation.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.VendorLocation.errors?.required">Vendor Location required</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblVendorSegment" for="inputVendorSegment">Vendor Segment</label> <span class="text-danger"> *</span>
+                    <input type="text" class="form-control" id="inputVendorSegment" formControlName="VendorSegment" placeholder="Auto populated" readonly/>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.VendorSegment.touched && pf.VendorSegment.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.VendorSegment.errors?.required">Vendor Segment required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblProductName" for="inputProductName">Product Name <span class="text-danger">*</span></label>
+                    <select id="inputProductName" formControlName="ProductId" (change)="onProductSelected($event)" class="form-control" >
+                    <option *ngFor="let p of products" [value]="p.Identifier">{{p.ProductName}}</option>
+                    </select>
+                    <div class="validation-msg" style="color:red">
+                        <ul *ngIf="saleFormErrorObject.productShowError" style="list-style-type:none">
+                            <li class="text-danger">Please select product</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblQty" for="inputQty">Quantity</label> <span class="text-danger"> *</span>
+                    <input type="number" class="form-control" id="inputQty" formControlName="Quantity" 
+                        placeholder="Enter Quantity" min="1"/>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.Quantity.touched && pf.Quantity.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.Quantity.errors?.required">Quantity required</li>
+                            <li class="text-danger" *ngIf="pf.Quantity.errors?.min">Quantity should be greater than 0</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblUOM" for="inputUOM">UOM <span class="text-danger">*</span></label>
+                    <select id="inputUOM" formControlName="UOM" (change)="onUomSelected($event)" class="form-control">
+                    <option *ngFor="let uom of _lstUom" [value]="uom.Val">{{uom.Name}}</option>
+                    </select>
+                    <div class="validation-msg" style="color:red">
+                        <ul *ngIf="saleFormErrorObject.UOMShowError" style="list-style-type:none">
+                            <li class="text-danger">Please select UOM</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblSaleRate" for="inputSaleRate">Sale Rate</label> <span class="text-danger"> *</span>
+                    <div class="currency-control">
+                        <span class="fa fa-inr"></span>
+                        <input type="number" class="form-control txtInputAmt" id="inputSaleRate" formControlName="SaleRate" 
+                            placeholder="Enter Sale Rate" min="1">
+                    </div>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.SaleRate.touched && pf.SaleRate.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.SaleRate.errors?.required">Sale Rate required</li>
+                            <li class="text-danger" *ngIf="pf.SaleRate.errors?.min">Sale Rate should be greater than 0</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label></label>
+                    <div>
+                        <button class="btn-footer-fill mt-2 ht-35" id="btnAdd" title="Add" [disabled]="validSaleProductAddForm()"
+                            (click)="addSaleProduct()"><i class="fa fa-plus"></i></button>
+                        <button class="btn-footer-fill mt-2 ht-35 ml-2" title="Clear" id="btnCancel" [disabled]="validSaleProductAddForm()"
+                            (click)="clearAddSaleProduct()"><i class="fa fa-refresh"></i></button>    
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-8 col-lg-8">
+                    <div *ngIf='salesprdlist!=undefined'>
+                          
+                        <div class="widget-area-grid padding-0" *ngIf='salesprdlist.length!=0'>
+                          <table mat-table [dataSource]="dataSource" class="table-cust">
+                            <ng-container matColumnDef="prdname">
+                              <th class="width30 ip-w-10" mat-header-cell *matHeaderCellDef> Product Name </th>
+                              <td mat-cell *matCellDef="let e" title="{{e.ProductName}}">{{e.ProductName}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="qty">
+                              <th class="width13 ip-w-5" mat-header-cell *matHeaderCellDef> Quantity </th>
+                              <td mat-cell *matCellDef="let e" title="{{e.Quantity}}">{{e.Quantity}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="uom">
+                              <th class="width10 ip-w-5" mat-header-cell *matHeaderCellDef> UOM </th>
+                              <td mat-cell *matCellDef="let e" title="{{e.UOM}}">{{e.UOM}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="salerate">
+                              <th class="width12 ip-w-5" mat-header-cell *matHeaderCellDef> Sale Rate </th>
+                              <td mat-cell *matCellDef="let e" title="{{e.Rate}}">{{e.Rate}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="totalamt">
+                                <th class="width20 ip-w-5" mat-header-cell *matHeaderCellDef> Amount<br>(Quantity * Rate) </th>
+                                <td mat-cell *matCellDef="let e" title="{{e.TotalAmount}}"><i class="fa fa-inr"></i> {{e.TotalAmount}} </td>
+                              </ng-container>
+                            <ng-container matColumnDef="actions">
+                              <th class="width15 ip-w-25" mat-header-cell *matHeaderCellDef> Actions </th>
+                              <td mat-cell *matCellDef="let e">
+                                <div class="action-btns btn-tbl-action">
+                                  <button type="button" title="Update" id="btnUpdate" (click)="editRecord(e)">
+                                    <span class="fa fa-pencil-square-o"></span>
+                                  </button>
+                                  <button type="button" title="Delete" id="btnDelete" (click)="deleteRecord(e)">
+                                    <span class="fa fa-trash-o"></span>
+                                  </button>
+                                </div>
+                              </td>
+                            </ng-container>
+                  
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                          </table>
+                          <table class="footer-table" *ngIf="salesprdlist.length!=0">
+                            <tr class="table-secondary font-weight-bold">
+                                <td class="width65 ip-w-10">Total Amount</td>
+                                <td class="width35 ip-w-10"><i class="fa fa-inr"></i> {{TotalProductSalesAmount}}</td>
+                            </tr>
+                        </table>
+                        </div>
+                      </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4"></div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblTotalAmount" for="inputTotalAmount">Total Amount</label> <span class="text-danger"> *</span>                    
+                    <div class="currency-control">
+                        <span class="fa fa-inr"></span>
+                        <input type="number" class="form-control txtInputAmt" id="inputTotalAmount" formControlName="TotalAmount" readonly
+                         (change)='onTotalAmountValueChange()'>
+                    </div>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.TotalAmount.touched && pf.TotalAmount.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.TotalAmount.errors?.required">Total Amount required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblGST" for="inputGST">GST (%)</label> <span class="text-danger"> *</span>
+                    <input type="number" class="form-control" id="inputGST" formControlName="GST" placeholder="Enter GST" (change)='onGstValueChange()'/>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.GST.touched && pf.GST.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.GST.errors?.required">GST required</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblTotalBill" for="inputTotalBill">Total Bill</label> <span class="text-danger"> *</span>
+                    <div class="currency-control">
+                        <span class="fa fa-inr"></span>
+                        <input type="number" class="form-control txtInputAmt" id="inputTotalBill" formControlName="TotalBill" readonly
+                        placeholder="TotalAmount + GST" (change)='onTotalBillValueChange()'>
+                    </div>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.TotalBill.touched && pf.TotalBill.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.TotalBill.errors?.required">Total Bill required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblAmountPaid" for="inputAmountPaid">Amount Paid</label> <span class="text-danger"> *</span>
+                    <div class="currency-control">
+                        <span class="fa fa-inr"></span>
+                        <input type="number" class="form-control txtInputAmt" id="inputAmountPaid" formControlName="AmountPaid" 
+                        placeholder="Enter Paid Amount" (change)='onAmountPaidValueChange()' min="0">
+                    </div>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.AmountPaid.touched && pf.AmountPaid.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.AmountPaid.errors?.required">Amount Paid required</li>
+                            <li class="text-danger" *ngIf="pf.AmountPaid.errors?.min">Amount Paid should not be less than 0</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblAmountPending" for="inputAmountPending">Amount Pending</label> <span class="text-danger"> *</span>
+                    <div class="currency-control">
+                        <span class="fa fa-inr"></span>
+                        <input type="number" class="form-control txtInputAmt" id="inputAmountPending" formControlName="AmountPending" 
+                        placeholder="TotalBill - AmountPaid" readonly>
+                    </div>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.AmountPending.touched && pf.AmountPending.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.AmountPending.errors?.required">Amount Pending required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblPaymentCycle" for="inputPaymentCycle">Payment Cycle</label> 
+                    <input type="text" class="form-control" id="inputPaymentCycle" formControlName="PaymentCycle" placeholder="Enter Payment Cycle" />
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblRemark" for="inputRemark">Remark</label> 
+                    <textarea class="form-control" rows="3" id="inputRemark" formControlName="Remark"></textarea>
+                    <ul *ngIf="pf.Remark.touched && pf.Remark.errors" style="list-style-type:none">
+                        <li class="text-danger" *ngIf="pf.Remark.errors?.maxlength">Remark length should not be greater than 500</li>
+                    </ul>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card border-0 mt-4 mb-3 bg-transparent">
+        <div class="card-body p-0">
+            <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="saveBtnValidation()"
+                (click)="OnSaveBtnClicked()">Save</button>
+            <button class="btn-footer-outline" id="btnCancel" (click)="OnCancelBtnClicked()">Cancel</button>
+        </div>
+    </div>
+
+</form>

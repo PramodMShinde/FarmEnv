@@ -1,0 +1,109 @@
+<div class="page-title">
+    <span class="xs-title" *ngIf="EditModeOn == false"> Add Inventory </span>
+    <span class="xs-title" *ngIf="EditModeOn == true"> Update Inventory details </span>
+</div>
+
+<form [formGroup]="inventoryFormGroup" name="inventoryForm">
+    <div class="card border-0 mb-2 card-shadow">
+        <div class="card-body">
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblProductName" for="inputProductName">Product Name <span class="text-danger">*</span></label>
+                    <select id="inputProductName" formControlName="ProductId" (change)="onProductSelected($event)" class="form-control" [attr.disabled]="EditModeOn?'':null">
+                    <option *ngFor="let p of products" [value]="p.Identifier">{{p.ProductName}}</option>
+                    </select>
+                    <div class="validation-msg" style="color:red">
+                        <ul *ngIf="invFormErrorObject.productShowError" style="list-style-type:none">
+                            <li class="text-danger">Please select product</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblProcureQty" for="inputProcureQty">Procurement Quantity</label> <span class="text-danger"> *</span>
+                    <input type="number" class="form-control" id="inputProcureQty" formControlName="ProcureQuantity" 
+                        placeholder="Enter Procurement Quantity" (change)='onProcureQuantityValueChange()' min="0"/>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.ProcureQuantity.touched && pf.ProcureQuantity.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.ProcureQuantity.errors?.required">Procurement Quantity required</li>
+                            <li class="text-danger" *ngIf="pf.ProcureQuantity.errors?.min">Procurement Quantity should not be less than 0</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblProcureUOM" for="inputProcureUOM">Procurement UOM <span class="text-danger">*</span></label>
+                    <select id="inputProcureUOM" formControlName="ProcureUOM" (change)="onProcureUomSelected($event)" class="form-control">
+                    <option *ngFor="let uom of _lstProcureUom" [value]="uom.Val">{{uom.Name}}</option>
+                    </select>
+                    <div class="validation-msg" style="color:red">
+                        <ul *ngIf="invFormErrorObject.ProcureUOMShowError" style="list-style-type:none">
+                            <li class="text-danger">Please select Procurement UOM</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblSaleQty" for="inputSaleQty">Sale Quantity</label> <span class="text-danger"> *</span>
+                    <input type="number" class="form-control" id="inputSaleQty" formControlName="SaleQuantity" 
+                        placeholder="Enter Sale Quantity" (change)='onSaleQuantityValueChange()' min="0"/>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.SaleQuantity.touched && pf.SaleQuantity.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.SaleQuantity.errors?.required">Sale Quantity required</li>
+                            <li class="text-danger" *ngIf="pf.SaleQuantity.errors?.min">Sale Quantity should not be less than 0</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblSaleUOM" for="inputSaleUOM">Sale UOM <span class="text-danger">*</span></label>
+                    <select id="inputSaleUOM" formControlName="SaleUOM" (change)="onSaleUomSelected($event)" class="form-control">
+                    <option *ngFor="let uom of _lstSaleUom" [value]="uom.Val">{{uom.Name}}</option>
+                    </select>
+                    <div class="validation-msg" style="color:red">
+                        <ul *ngIf="invFormErrorObject.SaleUOMShowError" style="list-style-type:none">
+                            <li class="text-danger">Please select Sale UOM</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblWastage" for="inputWastage">Wastage</label> <span class="text-danger"> *</span>
+                    <input type="number" class="form-control" id="inputWastage" formControlName="Wastage" 
+                        placeholder="Enter Wastage ..." (change)='onWastageValueChange()' min="0"/>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.Wastage.touched && pf.Wastage.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.Wastage.errors?.required">Wastage required</li>
+                            <li class="text-danger" *ngIf="pf.Wastage.errors?.min">Wastage should not be less than 0</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4">
+                    <label id="lblPendingQty" for="inputPendingQty">Pending Quantity <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="inputPendingQty" formControlName="PendingQty" 
+                        placeholder="Enter Pending Quantity ..." readonly/>
+                    <div class="validation-msg" style="color:red" *ngIf="pf.PendingQty.touched && pf.PendingQty.errors">
+                        <ul style="list-style-type:none">
+                            <li class="text-danger" *ngIf="pf.PendingQty.errors?.required">Pending Quantity required</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="card border-0 mt-4 mb-3 bg-transparent">
+        <div class="card-body p-0">
+            <button class="btn-footer-fill mr-2" id="btnSave" [disabled]="saveBtnValidation()"
+                (click)="OnSaveBtnClicked()">Save</button>
+            <button class="btn-footer-outline" id="btnCancel" (click)="OnCancelBtnClicked()">Cancel</button>
+        </div>
+    </div>
+
+</form>

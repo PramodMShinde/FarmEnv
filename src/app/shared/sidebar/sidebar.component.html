@@ -1,0 +1,162 @@
+<div id="wrapper" [ngClass]="toggleBodyClass">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-midnight-bloom sidebar sidebar-dark accordion" [ngClass]="toggleSidebarClass" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" (click)="navigateToDashoard()">
+            <div class="sidebar-brand-icon">
+                <i class="fa-fw material-icons">inventory_2</i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Industry IKS</div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item" [ngClass]="(URL=='/dashboard')?'active':''" (click)="navigateToDashoard()">
+            <a class="nav-link"><i class="fa fa-fw fa-tachometer fa-sm"></i>
+                <span>Dashboard</span></a>
+        </li>
+        <li class="nav-item" [ngClass]="(URL=='/procurment')?'active':''" (click)="navigateToProcurement()">
+            <a class="nav-link"><i class="fa fa-fw fa-bar-chart"></i>
+                <span>Procurement</span></a>
+        </li>
+        <li class="nav-item" [ngClass]="(URL=='/sales')?'active':''" (click)="navigateToSales()">
+            <a class="nav-link"><i class="fa-fw material-icons">dvr</i>
+                <span>Sale</span></a>
+        </li>
+        <li class="nav-item" [ngClass]="(URL=='/profitandloss')?'active':''" (click)="navigateToProftandloss()">
+            <a class="nav-link"><i class="fa fa-fw fa-bar-chart-o"></i>
+                <span>Profit & Loss</span></a>
+        </li>
+        <li class="nav-item" [ngClass]="(URL=='/inventory')?'active':''" (click)="navigateToInventory()">
+            <a class="nav-link"><i class="fa-fw material-icons">insights</i>
+                <span>Inventory</span></a>
+        </li>
+        
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Admin
+        </div>
+        
+        <li class="nav-item" [ngClass]="(URL=='/farmers')?'active':''" (click)="navigateToFarmer()">
+            <a class="nav-link"><i class="fa-fw material-icons">grass</i>
+                <span>Farmer</span></a>
+        </li>
+        <li class="nav-item" [ngClass]="(URL=='/vendors')?'active':''" (click)="navigateToVendor()">
+            <a class="nav-link"><i class="fa-fw material-icons">storefront</i>
+                <span>Vendor</span></a>
+        </li>
+        <li class="nav-item" [ngClass]="(URL=='/products')?'active':''" (click)="navigateToProduct()">
+            <a class="nav-link"><i class="fa-fw material-icons">shopping_basket</i>
+                <span>Product</span></a>
+        </li>
+    </ul>
+    <!-- End of Sidebar -->
+
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-2 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggle" class="btn btn-link rounded-circle mr-3" (click)='toggleSidebar()'>
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+
+                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                    <li class="nav-item dropdown no-arrow d-sm-none">
+                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <!-- Dropdown - Messages -->
+                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                            aria-labelledby="searchDropdown">
+                            <form class="form-inline mr-auto w-100 navbar-search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control bg-light border-0 small"
+                                        placeholder="Search for..." aria-label="Search"
+                                        aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+
+                    <!-- Nav Item - Alerts -->
+                    <!-- <li class="nav-item dropdown no-arrow mx-1">
+                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-bell fa-fw"></i>
+                            <span class="badge badge-danger badge-counter">3+</span>
+                        </a>
+                    </li> -->
+
+                    <!-- Nav Item - Messages -->
+                    <!-- <li class="nav-item dropdown no-arrow mx-1">
+                        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <span class="badge badge-danger badge-counter">7</span>
+                        </a>
+                    </li>
+
+                    <div class="topbar-divider d-none d-sm-block"></div> -->
+
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{UserName}}</span>
+                            <img class="img-profile rounded-circle" src="assets/images/undraw_profile.svg">
+                        </a>
+                    </li>
+
+                    <li class="nav-item no-arrow mx-0">
+                        <a class="nav-link" (click)='signout()' id="userSignout" role="button" title="Logout">
+                            <i class="fa fa-sign-out fa-2x"></i>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <router-outlet></router-outlet>
+            </div>
+            <!-- End of Page Content -->                
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Your Website 2021</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+
+</div>

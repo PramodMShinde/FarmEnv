@@ -1,0 +1,135 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-2">
+  <div class="col-7">
+    <h4 class="h4 mb-0 text-gray-800">Products</h4>
+  </div>
+  <div class="col-5 text-right">
+    <form class="form-inline float-right" [formGroup]="filterFormGroup" name="filterForm">
+      <div class="form-group mx-sm-1">
+        <input type="text" class="form-control" id="filterProductNameTxt" formControlName="FilterProductName"
+          placeholder="Search product name ..." (change)='onFilterProductNameValChange()'>
+      </div>
+      <div class="form-group mx-sm-2">
+        <button class="btn-footer-fill my-2 ht-35" id="btnResetFilterForm" (click)="OnResetBtnClicked()">Reset</button>
+      </div>
+      <div class="form-group mx-sm-1 mb-2">
+        <a (click)='navigationToAddRecord()' class="btn btn-primary mt-2 text-white ht-35"><i class="fa fa-plus"></i>
+          Add</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <div class="d-flex justify-content-center mb-4">
+      <div class="pagination-mat position-relative">
+        <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true"
+          [length]="totalSize" [pageIndex]="currentPage" (page)="handlePage($event)">
+        </mat-paginator>
+      </div>
+    </div>
+
+    <div *ngIf='datalist!=undefined'>
+      <div class="widget-area-grid padding-0" *ngIf='datalist.length!=0'>
+        <table mat-table [dataSource]="dataSource" matSort class="table-cust" (matSortChange)="sortData($event)">
+          <ng-container matColumnDef="name">
+            <th class="width30 ip-w-10" mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
+            <td mat-cell *matCellDef="let element" title="{{element.ProductName}}">{{element.ProductName}}</td>
+          </ng-container>
+          <ng-container matColumnDef="code">
+            <th class="width30 ip-w-10" mat-header-cell *matHeaderCellDef> Product Code </th>
+            <td mat-cell *matCellDef="let element" title="{{element.ProductCode}}">{{element.ProductCode}}</td>
+          </ng-container>
+          <ng-container matColumnDef="uom">
+            <th class="width20 ip-w-5" mat-header-cell *matHeaderCellDef mat-sort-header> UOM </th>
+            <td mat-cell *matCellDef="let element" title="{{element.UOM}}">{{element.UOM}} </td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th class="width20 ip-w-25" mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="action-btns btn-tbl-action">
+                <button type="button" title="Update" id="btnUpdate" [disabled]="!element.IsActive"
+                  (click)="navigationToEditRecord(element)">
+                  <span class="fa fa-pencil-square-o"></span>
+                </button>
+                <button type="button" (click)="deactivateRecord(element)" title="Deactivate" *ngIf="element.IsActive">
+                  <span class="fa fa-toggle-on text-success"></span>
+                </button>
+                <button type="button" (click)="activateRecord(element)" title="Activate" *ngIf="!element.IsActive">
+                  <span class="fa fa-toggle-off text-success"></span>
+                </button>
+                <button type="button" title="Delete" id="btnDelete" (click)="deleteRecord(element)">
+                  <span class="fa fa-trash-o"></span>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <div class="widget-area-grid padding-0 text-center" *ngIf='datalist.length==0'>
+        No Record found
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<form [formGroup]="AddEditProductFormGroup">
+  <div class="form-popup side-popup width340" [ngClass]="addEditProductContainer? 'show' : 'hide'">
+    <div class="filter-head">
+      <label class="m-0">{{Action}} Product</label>
+    </div>
+
+    <div class="filter-body stylescrollbar">
+      <div class="row">
+        <div class="form-group col-sm-12 parent-rtl">
+          <label>Product Name</label>
+          <input type="text" class="form-control" id="ProductName" formControlName="ProductName"
+            [readonly]="Action=='Edit'">
+          <div class="validation-msg" style="color:red">
+            <ul *ngIf="ProductName.touched && ProductName.errors" style="list-style-type:none">
+              <li class="text-danger" *ngIf="ProductName.errors?.pattern">Invalid product name</li>
+              <li class="text-danger" *ngIf="ProductName.errors?.required">Product name required</li>
+              <li class="text-danger" *ngIf="ProductName.errors?.minlength">Product name length should not be less than
+                2</li>
+              <li class="text-danger" *ngIf="ProductName.errors?.maxlength">Product name length should not be greater
+                than 50</li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group col-sm-12 parent-rtl">
+          <label>UOM</label>
+          <input type="text" class="form-control" id="ProductUOM" formControlName="ProductUOM">
+          <div class="validation-msg" style="color:red">
+            <ul *ngIf="ProductUOM.touched && ProductUOM.errors" style="list-style-type:none">
+              <li class="text-danger" *ngIf="ProductUOM.errors?.pattern">Invalid product UOM</li>
+              <li class="text-danger" *ngIf="ProductUOM.errors?.required">Product UOM required</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-footer">
+      <ul class="nav nav-toolbar">
+        <li class="nav-item width50">
+          <button title="Save" id="btnCloseForm" (click)="AddUpdateProduct()" [disabled]="vaildateForm()"
+            class="btn-footer-fill btn-block rounded-0 height100">
+            <span class="fa fa-check"></span>
+          </button>
+        </li>
+        <li class="nav-item width50">
+          <button title="Close" id="btnCloseForm" (click)="CloseProductForm()"
+            class="btn-footer-fill btn-block rounded-0 height100">
+            <span class="fa fa-close"></span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</form>
+
+<div class="overlay" id="divOverlayAddEdit" [ngClass]="!addEditProductContainer? 'hide':'show'"></div>

@@ -1,0 +1,148 @@
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  vertical-align: middle;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+/* Rules for sizing the icon. */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+.bg-midnight-bloom {
+  background: linear-gradient(-20deg, #2b5876 0%, #4e4376 100%) !important;
+}
+.card-icon-place{
+  position: absolute;
+  right: 0;
+  opacity: 0.5;
+}
+.info-card .card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding:0.4rem 1.25rem;
+}
+.card-img-icon{
+  position: absolute;
+  right: -40px;
+  opacity: 0.1;
+    transform: scale(1.1);
+}
+.right-8{
+  right:8px !important;
+}
+.top-card-title{
+  font-size: 60px;
+  line-height: 1;
+}
+#wanrning-table{
+  overflow: auto;
+    max-height: 18rem;
+}
+#wanrning-table .list-group-item{
+  font-size: 14px;
+  display:flex;
+}
+#wanrning-table .list-group-item.active .btn-link{
+  color:#fff
+}
+.fa-sm{
+  font-size: 0.84rem !important;
+}
+
+a {
+  cursor: pointer;
+}
+
+.currency-control {
+  width: 100%;
+  float: left;
+  height: 40px;
+  position: relative;
+  background-color: #d4d3d3;
+  border-radius: 5px;
+  padding-left: 40px;
+}
+
+.currency-control span {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 0px;
+  line-height: 40px;
+  top: 0px;
+  text-align: center;
+}
+
+.txtInputAmt {
+  width: 100%;
+  float: left;
+  height: 100%;
+  outline: none;
+  border: none;
+  border-radius: 0px 4px 4px 0px;
+  padding-left: 10px;
+}
+
+footer.sticky-footer {
+  padding: .75rem !important;
+}
+
+.topbar.navbar-light .navbar-nav .nav-item .nav-link {
+  color: #4e73df !important;
+}
+
+.footer-table {
+  background-color: transparent;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  min-height: 40px;
+  position: relative;
+  width: 100%;
+}
+
+.footer-table td {
+  vertical-align: middle;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 0;
+    white-space: nowrap;
+    padding: 0 10px;
+}
